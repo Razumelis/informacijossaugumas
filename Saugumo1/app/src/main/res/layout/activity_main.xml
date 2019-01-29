@@ -95,12 +95,6 @@
             android:textSize="18dp" />
 
         <TextView
-            android:id="@+id/deocoded"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:hint="message will appear here" />
-
-        <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="2dp"

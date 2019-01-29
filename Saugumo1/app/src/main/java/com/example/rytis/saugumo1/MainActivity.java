@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     RadioGroup radioGroup;
     EditText codewordText;
     Button clearButton;
-    TextView decoded;
+    ///TextView decoded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         cipherText = (TextView) findViewById(R.id.textView2);
-        decoded = (TextView) findViewById(R.id.deocoded);
+        //decoded = (TextView) findViewById(R.id.deocoded);
 
         rotationPicker = (NumberPicker) findViewById(R.id.numberPicker);
         rotationPicker.setMinValue(0);
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 inputText.setText("");
                 cipherText.setText("");
-                decoded.setText(" ");
+             //  decoded.setText(" ");
             }
         });
 
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
     public void refreshCipherText() {
         String output = computeCipher(inputText.getText().toString());
         cipherText.setText(output);
-        decoded.setText(output);
+       // decoded.setText(output);
     }
 
     public String computeCipher(String input) {
@@ -202,45 +202,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    public String computeRotationCipher(int rotation, String input) {
-        // assume input is only a-zA-Z
-        int a_num = (int) 'a';
-        int A_num = (int) 'A';
-        String output = "";
-        for (int i = 0; i < input.length(); i++) {
-            int cur = (int) input.charAt(i);
-            // check if lowercase or uppercase
-            if (input.charAt(i) == ' ') {
-                output += " ";
-            } else if (cur >= a_num && cur < a_num + 26) {
-                output += Character.toString((char) ((((cur - a_num) + rotation) % 26) + a_num));
-            } else {
-                output += Character.toString((char) ((((cur - A_num) + rotation) % 26) + A_num));
-            }
-        }
-
-        return output;
+    public static String computeRotationCipherdecode(int offset, String enc) {
+        return computeRotationCipher(26-offset, enc);
     }
 
-    public String computeRotationCipherdecode(int rotation, String input) {
-        // assume input is only a-zA-Z
-        int a_num = (int) 'a';
-        int A_num = (int) 'A';
-        String output = "";
-        for (int i = 0; i < input.length(); i++) {
-            int cur = (int) input.charAt(i);
-            // check if lowercase or uppercase
-            if (input.charAt(i) == ' ') {
-                output += " ";
-            } else if (cur >= a_num && cur < a_num + 26) {
-                output += Character.toString((char) ((((cur - a_num) - rotation) % 26) + a_num));
+    public static String computeRotationCipher( int offset, String enc) {
+        offset = offset % 26 + 26;
+        StringBuilder encoded = new StringBuilder();
+        for (char i : enc.toCharArray()) {
+            if (Character.isLetter(i)) {
+                if (Character.isUpperCase(i)) {
+                    encoded.append((char) ('A' + (i - 'A' + offset) % 26 ));
+                } else {
+                    encoded.append((char) ('a' + (i - 'a' + offset) % 26 ));
+                }
             } else {
-                output += Character.toString((char) ((((cur - A_num) - rotation) % 26) + A_num));
+                encoded.append(i);
             }
         }
-
-        return output;
+        return encoded.toString();
     }
 
 }
